@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+      <h1>Welcome to Kitchen Contractor!</h1>
+      <p>Kitchen Contractor gives you the tools to be your own general contractor for your kitchen renovation.</p>
+      <p>Use the options at the top of the page to plan a new project or continue an existing one</p>
+      <p>FAQ:</p>
+      <b>What is KitchenContractor?</b>
+      <p>KitchenContractor is a platform that allows you to manage your own kitchen renovation</p>
+      <hr>
+      <b>Why should I use Kitchen Contractor?</b>
+      <li>The average general contractor takes about 10-20% of the cost of construction as a fee - money which can be invested into your kitchen instead. Additionally, as your own general contractor, you control exactly what the final version of your kitchen will look like.</li>
+      <hr>
+      <b>How does it work?</b>
+      <p><b>Home Owners:</b>
+      	<li>Meet with an architect/designer to plan what your renovated kitchen will look like. You can search for them <a href="{{url_for('findContractors') }}">Here</a></li>
+      	<li>Start a new project using the link at the top of the page, and fill out the questionnaire</li>
+      	<li>You now have a step by step plan for your kitchen renovation, which you can find under your profile</li>
+      	<li>Search for contractors that the plan calls for</li>
+      	<li>Look through contractor past projects and reviews to find the contractor right for you</li>
+      	<li>Contact the contractor(s) and request an estimate for the job</li>
+      	<li>Send a join request to the contractor whose offer you accept</li>
+      	<li>repeat the process for each step of the plan</li>
+      	<li>After all contractors have completed their roles and your kitchen has been renovated, mark the project as completed</li>
+      	<li>Don't forget to leave a review for the contractors you hired!</li>
+      	</p>
+      <p><b>Contractors:</b>
+      	<li>Set up your profile page</li>
+      	<li>If a homeowner contacts you, give them an estimate for the project</li>
+      	<li>If the homeowner accepts, you will receive a request to join the project</li>
+      	<li>Do your part of the Renovation!</li>
+      </p>
+      <p>Both types of users can manage their current projects and pending requests on their profiles</p>
+{% endblock %}

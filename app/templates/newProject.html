@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <p>It is highly recommended that you meet with a designer or architect to plan your kitchen renovation before starting a project. You can search for them <a href="{{url_for('findContractors') }}">Here</a></p>
+  <h1>Describe your project:</h1>
+  <form action="" method="POST" name="newProj">
+      {{form.hidden_tag()}}
+      <table>
+          <tr>
+              <td>Project Name:</td>
+              <td>{{ form.proj_name(size=24) }}</td>
+          </tr>
+          <tr>
+              <td>Are you replacing your cabinets?</td>
+              
+              <td>{{ form.cabs_rep(size=24) }}</td>
+              
+          </tr>
+          <tr>
+              <td>Are you refacing your cabinets?</td>
+              
+              <td>{{ form.cabs_ref(size=24) }}</td>
+              
+          </tr>
+          <tr>
+              <td>Are you adding any walls?</td>
+              <td>{{ form.framing_add(size=24) }}</td>
+          </tr>
+          <tr>
+              <td>Are you removing any walls?</td>
+              <td>{{ form.framing_rem(size=24) }}</td>
+          </tr>
+          <tr>
+              <td>Are you changing the placement of any appliances or sinks?</td>
+              <td>{{ form.layout(size=24) }}</td>
+          </tr>
+          <tr>
+              <td>Are you purchasing any new apliances?</td>
+              <td>{{ form.buy_apps(size=24) }}</td>
+          </tr>
+          <tr>
+              <td>Select all appliances that will be in your renovated kitchen</td>
+              {% for subfield in form.new_apps %}
+              <tr>
+                <td>{{ subfield.label(size=24) }} : {{ subfield(size=24) }}</td>
+              </tr>
+              {% endfor %}
+          </tr>
+          <tr>
+              <td>Are you making changes to lighting fixture type/position?</td>
+              <td>{{ form.electrical_fix(size=24) }}</td>
+          </tr>
+          <tr>
+              <td>Are you making any changes to electrical socket position or number?</td>
+              <td>{{ form.electrical_sock(size=24) }}</td>
+          </tr>
+          <tr>
+              <td>Are you replacing your floors?</td>
+              <td>{{ form.flooring(size=24) }}</td>
+          </tr>
+          <tr>
+              <td>Are you putting in new countertops?</td>
+              <td>{{ form.countertops(size=24) }}</td>
+          </tr>
+          <tr>
+              <td>Are you installing any tiles?</td>
+              <td>{{ form.tiles(size=24) }}</td>
+          </tr>
+          <tr>
+              <td>Are you replacing any windows?</td>
+              <td>{{ form.windows(size=24) }}</td>
+          </tr>
+          <tr>
+              <td></td>
+              <td><button type="submit">Create</button></td>
+          </tr>
+      </table>
+  </form>
+{% endblock %}

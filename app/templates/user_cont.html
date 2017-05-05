@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='user_cont.css') }}"/>
+  <h1>User: {{ user.username }}</h1>
+  <h2>User type: {{ user.user_type }}</h2>
+  <h2>Contact: {{ user.email }} </h2>
+  {% if g.user.user_type == 'Home Owner' %}
+  <a href="{{url_for('review', username=user.username) }}"><b>Leave a review</b></a>
+  {% endif %}
+  <hr>
+  <div class="tab">
+  <button class="tablinks" onclick="openSec(event, 'Company')" id="defaultOpen">Company</button>
+  <button class="tablinks" onclick="openSec(event, 'Past')">Past Projects</button>
+  <button class="tablinks" onclick="openSec(event, 'Reviews')">Reviews</button>
+  {% if g.user.username == user.username %}
+  <button class="tablinks" onclick="openSec(event, 'Pending')">Pending projects</button>
+  <button class="tablinks" onclick="openSec(event, 'Current')">Current projects</button>
+  {% endif %}
+</div>
+
+<div id="Company" class="tabcontent">
+  <h3>{{user.company_name}}</h3>
+  <p>{{ user.about }}</p>
+  {% if g.user == user %}
+  <a href="{{ url_for('edit') }}">Edit</a>
+  {% endif %}
+</div>
+
+<div id="Past" class="tabcontent">
+  <h3>Past Projects</h3>
+  {% for prj in projs_past %}
+  <p>
+  	<li><a href="{{url_for('project', project_name=prj.name) }}">{{prj.name}} : {{prj.role}}</b></a></li>
+  </p>
+  {% endfor %}
+</div>
+
+<div id="Reviews" class="tabcontent">
+  <h3>Reviews</h3>
+  {% for rev in reviews %}
+  <table>
+  	<tr>
+      	<td>Home Owner : </td>
+      	<td><b>{{ rev.client_name }}</b></td>
+    </tr>
+
+    <tr>
+      	<td>Job type:</td>
+      	<td><b>{{ rev.job_type }}</b></td>
+    </tr>
+
+    <tr>
+      	<td>Rating: </td>
+      	<td><b>{{ rev.num_rev }}/5</b></td>
+    </tr>
+    <tr>
+      	<td>Review:</td>
+      	<td><b>{{ rev.rev }}</b></td>
+    </tr>
+    <hr>
+    {% endfor %}
+  </table>
+</div>
+
+<div id="Current" class="tabcontent">
+<h3>Current Projects:</h3>
+  {% for prj in projs_curr %}
+  <p>
+  	<li><a href="{{url_for('project', project_name=prj.name) }}">{{prj.name}} : {{prj.role}}</a></li>
+    <!-- {{ prj.name}} : <b>kitchen</b> -->
+  </p>
+  {% endfor %}
+</div>
+
+<div id="Pending" class="tabcontent">
+  <h3>You have been invited to the following projects:</h3>
+  {% for pend in pending %}
+  <p>
+  	<li>Project: <a href="{{url_for('project', project_name=pend.proj) }}">{{pend.proj}}</a>, Client: <a href="{{url_for('user', username=pend.user) }}">{{pend.user}}</a>, Job type: {{pend.type}}</li>
+  	<form action="" method="POST" name="accept/deny">
+  	<button type='submit' name='submit' value='{{pend.proj}},Accept'>Accept</button>
+  	<button type='submit' name='submit' value='{{pend.proj}},Reject'>Reject</button>
+  	</form>
+  </p>
+  {% endfor %}
+</div>
+
+
+<script type="text/javascript">
+	function openSec(evt, SecName) {
+    // Declare all variables
+    var i, tabcontent, tablinks;
+
+    // Get all elements with class="tabcontent" and hide them
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+
+    // Get all elements with class="tablinks" and remove the class "active"
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+
+    // Show the current tab, and add an "active" class to the link that opened the tab
+    document.getElementById(SecName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+document.getElementById("defaultOpen").click();
+</script>
+{% endblock %}

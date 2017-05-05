@@ -1,0 +1,83 @@
+<!--     <div class="nav-collapse collapse">
+            <ul class="nav">
+                <li class="active"><a href="/">Home</a></li>
+                {% if g.user.is_authenticated %}
+                    <li><a href="{{ url_for('user', username=g.user.username) }}">Your projects</a></li>
+                    <li><a href="{{url_for('newProject') }}">New Project</a></li>
+                    <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('login') }}">Login</a></li>
+                    <li><a href="{{ url_for('register') }}">Register</a></li>
+                {% endif %}
+            </ul>
+</div>
+    <div>Your Projects : <a href="/index">Home</a></div>
+    <hr>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+        {% for message in messages %}
+            <li>{{ message }} </li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </body> -->
+<!-- </html> -->
+
+
+
+
+
+
+
+
+<!--           <div class="nav-collapse collapse">
+            {% if g.user.is_authenticated %}
+            <form class="navbar-search pull-right" action="{{url_for('search')}}" method="post" name="search">{{g.search_form.hidden_tag()}}{{g.search_form.search(size=20,placeholder="Search",class="search-query")}}</form>
+            {% endif %}
+          </div> -->
+
+
+<!--   <form action="" method=post class="form-horizontal">
+    <h2>Sign up for KitchenContractor</h2>
+    <div class="control-group">
+        <div class="controls">
+          <input type="text" id="username" name="username" class="input-xlarge"
+            placeholder="Enter Username" value="{{ request.form.username }}"
+            required>
+        </div>
+    </div>
+ 
+    <div class="control-group">
+        <div class="controls">
+          <input type="password" id="password" name="password" class="input-xlarge"
+            placeholder="Enter Password" value="{{ request.form.password }}"
+            required>
+        </div>
+    </div>
+ 
+    <div class="control-group">
+        <div class="controls">
+          <input type="email" id="email" name="email" class="input-xlarge"
+            placeholder="Enter Email" value="{{ request.form.email }}"
+            required>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <div class="controls">
+          <input type="text" id="type" name="type" class="input-xlarge"
+            placeholder="Enter type" value="{{ request.form.type }}"
+            required>
+        </div>
+    </div>
+ 
+    <div class="control-group">
+        <div class="controls">
+          <button type="submit" class="btn btn-success">Signup</button>
+        </div>
+    </div>
+  </form>
+{% endblock %} -->

@@ -1,0 +1,484 @@
+{% extends "base.html" %}
+
+{% block content %}
+<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='project.css') }}"/>
+<p>Project Overview:</p>
+<p><b>Project status: {{ status }}</b></p>
+<p><b>Project owner: <a href="{{url_for('user', username=owner) }}"><b>{{owner}}</b></a></b></p>
+{% if g.user.username == owner %}
+<form method='POST' action="{{ url_for('project', project_name=projName) }}">
+  {{ form.hidden_tag() }}
+  {% if status == 'In Progress' %}
+  <p>Mark project as completed: {{ form.done }}</p>
+  {% else %}
+  <p>Mark project as in progress: {{ form.in_prog }}</p>
+  {% endif %}
+  {% if status != 'Completed' %}
+  <p>Delete project : {{ form.delete }}</p>
+  {% endif %}
+</form>
+<form action='/findContractors'>
+    <p>Search for Contractors: <input type="submit" value="Find contractors" /></p>
+</form>
+{% endif %}
+<div id="wrapper">
+<div class="tab">
+  {% if demo != [] %}
+  <button class="tablinks" onclick="openSec(event, 'Demolition')" id="defaultOpen">Demolition</button>
+  {% endif %}
+  {% if framing != [] %}
+  <button class="tablinks" onclick="openSec(event, 'Framing')">Framing</button>
+  {% endif %}
+  {% if plumb != [] %}
+  <button class="tablinks" onclick="openSec(event, 'Plumbing')">Plumbing</button>
+  {% endif %}
+  {% if elec != [] %}
+  <button class="tablinks" onclick="openSec(event, 'Electrical')">Electrical</button>
+  {% endif %}
+  {% if drywall != [] %}
+  <button class="tablinks" onclick="openSec(event, 'Drywall')">Drywall</button>
+  {% endif %}
+  {% if paint != [] %}
+  <button class="tablinks" onclick="openSec(event, 'Painting')">Painting</button>
+  {% endif %}
+  {% if floor != [] %}
+  <button class="tablinks" onclick="openSec(event, 'Flooring')">Flooring</button>
+  {% endif %}
+  {% if cabs != [] %}
+  <button class="tablinks" onclick="openSec(event, 'Cabinets')">Cabinets</button>
+  {% endif %}
+  {% if counter != [] %}
+  <button class="tablinks" onclick="openSec(event, 'Countertops')">Countertops</button>
+  {% endif %}
+  {% if tiles != [] %}
+  <button class="tablinks" onclick="openSec(event, 'Tiles')">Tiles</button>
+  {% endif %}
+  {% if apps != [] %}
+  <button class="tablinks" onclick="openSec(event, 'Appliances')">Appliances</button>
+  {% endif %}
+  {% if windows != [] %}
+  <button class="tablinks" onclick="openSec(event, 'Windows')">Windows</button>
+  {% endif %}
+</div>
+
+<div id="Demolition" class="tabcontent">
+  <h3>Demolition</h3>
+  <div class="tab2">
+<!--     {% for task in demo %}
+    <button class = "DemolitionTabs" onclick = "openTask(event, 'Demolition', '{{ task }}')">{{ task }}</button>
+    {% endfor %} -->
+    </div>
+    <div class = "taskDets">
+      {% for task in demo %}
+      <div id='{{ task }}' class="DemolitionTasks">
+      <li>{{ task }}</li>
+      </div>
+      {% endfor %}
+      <form method='POST' action="{{ url_for('project', project_name=projName) }}">
+      {{ form.hidden_tag() }}
+      {% if demo_cont %}
+      <p>Contractor: <a href="{{ url_for('user', username=demo_cont) }}">{{ demo_cont }}</a></p>
+      {% if status != 'Completed' %}
+        {% if g.user.username == owner or g.user.username == demo_cont%}
+          {{ form.rem_demo }}
+          {% endif %}
+      {% endif %}
+      {% else %}
+      {% if status != 'Completed' %}
+      <p>Enter a username to send a request</p>
+      {{ form.demo_name }}
+        <input type="submit" value="Send join request">
+      {% endif %}
+      {% endif %}
+      </form>
+    </div> 
+</div>
+
+<div id="Framing" class="tabcontent">
+  <h3>Framing</h3>
+  <div class="tab2">
+<!--     {% for task in framing %}
+    <button class = "FramingTabs" onclick = "openTask(event, 'Framing', '{{ task }}')">{{ task }}</button>
+    {% endfor %} -->
+    </div>
+    <div class = "taskDets">
+      {% for task in framing %}
+      <div id='{{ task }}' class="FramingTasks">
+      <li>{{ task }}</li>
+      </div>
+      {% endfor %}
+      <form method='POST' action="{{ url_for('project', project_name=projName) }}">
+      {{ form.hidden_tag() }}
+      {% if framing_cont %}
+      <p>Contractor: <a href="{{ url_for('user', username=framing_cont) }}">{{ framing_cont }}</a></p>
+      {% if status != 'Completed' %}
+      {% if g.user.username == owner or g.user.username == framing_cont %}
+      {{ form.rem_framing }}
+      {% endif %}
+      {% endif %}
+      {% else %}
+      {% if status != 'Completed' %}
+      {{ form.framing_name }}
+        <input type="submit" value="Send join request">
+      {% endif %}
+      {% endif %}
+      </form>
+    </div>
+</div>
+
+<div id="Plumbing" class="tabcontent">
+  <h3>Plumbing</h3>
+  <div class="tab2">
+<!--     {% for task in plumb %}
+    <button class = "PlumbingTabs" onclick = "openTask(event, 'Plumbing', '{{ task }}')">{{ task }}</button>
+    {% endfor %} -->
+    </div>
+    <div class = "taskDets">
+      {% for task in plumb %}
+      <div id='{{ task }}' class="PlumbingTasks">
+      <li>{{ task }}</li>
+      </div>
+      {% endfor %}
+      <form method='POST' action="{{ url_for('project', project_name=projName) }}">
+      {{ form.hidden_tag() }}
+      {% if plumb_cont %}
+      <p>Contractor: <a href="{{ url_for('user', username=plumb_cont) }}">{{ plumb_cont }}</a></p>
+      {% if status != 'Completed' %}
+      {% if g.user.username == owner or g.user.username == plumb_cont %}
+      {{ form.rem_plumbing }}
+      {% endif %}
+      {% endif %}
+      {% else %}
+      {% if status != 'Completed' %}
+      {{ form.plumbing_name }}
+        <input type="submit" value="Send join request">
+      {% endif %}
+      {% endif %}
+      </form>
+    </div>
+</div>
+
+<div id="Electrical" class="tabcontent">
+  <h3>Electrical</h3>
+  <div class="tab2">
+<!--     {% for task in elec %}
+    <button class = "ElectricalTabs" onclick = "openTask(event, 'Electrical', '{{ task }}')">{{ task }}</button>
+    {% endfor %} -->
+    </div>
+    <div class = "taskDets">
+      {% for task in elec %}
+      <div id='{{ task }}' class="ElectricalTasks">
+      <li>{{ task }}</li>
+      </div>
+      {% endfor %}
+      <form method='POST' action="{{ url_for('project', project_name=projName) }}">
+      {{ form.hidden_tag() }}
+      {% if elec_cont %}
+      <p>Contractor: <a href="{{ url_for('user', username=elec_cont) }}">{{ elec_cont }}</a></p>
+      {% if status != 'Completed' %}
+      {% if g.user.username == owner or g.user.username == elec_cont %}
+      {{ form.rem_elec }}
+      {% endif %}
+      {% endif %}
+      {% else %}
+      {% if status != 'Completed' %}
+      {{ form.elec_name }}
+        <input type="submit" value="Send join request">
+      {% endif %}
+      {% endif %}
+      </form>
+    </div>
+</div>
+
+<div id="Drywall" class="tabcontent">
+  <h3>Drywall</h3>
+  <div class="tab2">
+<!--     {% for task in drywall %}
+    <button class = "DrywallTabs" onclick = "openTask(event, 'Drywall', '{{ task }}')">{{ task }}</button>
+    {% endfor %} -->
+    </div>
+    <div class = "taskDets">
+      {% for task in drywall %}
+      <div id='{{ task }}' class="DrywallTasks">
+      <li>{{ task }}</li>
+      </div>
+      {% endfor %}
+      <form method='POST' action="{{ url_for('project', project_name=projName) }}">
+      {{ form.hidden_tag() }}
+      {% if drywall_cont %}
+      <p>Contractor: <a href="{{ url_for('user', username=drywall_cont) }}">{{ drywall_cont }}</a></p>
+      {% if status != 'Completed' %}
+      {% if g.user.username == owner or g.user.username == drywall_cont %}
+      {{ form.rem_drywall }}
+      {% endif %}
+      {% endif %}
+      {% else %}
+      {% if status != 'Completed' %}
+      {{ form.drywall_name }}
+        <input type="submit" value="Send join request">
+      {% endif %}
+      {% endif %}
+      </form>
+    </div>
+</div>
+
+<div id="Painting" class="tabcontent">
+  <h3>Painting</h3>
+  <div class="tab2">
+<!--     {% for task in paint %}
+    <button class = "PaintingTabs" onclick = "openTask(event, 'Painting', '{{ task }}')">{{ task }}</button>
+    {% endfor %} -->
+    </div>
+    <div class = "taskDets">
+      {% for task in paint %}
+      <div id='{{ task }}' class="PaintingTasks">
+      <li>{{ task }}</li>
+      </div>
+      {% endfor %}
+      <form method='POST' action="{{ url_for('project', project_name=projName) }}">
+      {{ form.hidden_tag() }}
+      {% if paint_cont %}
+      <p>Contractor: <a href="{{ url_for('user', username=paint_cont) }}">{{ paint_cont }}</a></p>
+      {% if status != 'Completed' %}
+      {% if g.user.username == owner or g.user.username == paint_cont %}
+      {{ form.rem_paint }}
+      {% endif %}
+      {% endif %}
+      {% else %}
+      {% if status != 'Completed' %}
+      {{ form.paint_name }}
+        <input type="submit" value="Send join request">
+      {% endif %}
+      {% endif %}
+      </form>
+    </div>
+</div>
+
+<div id="Flooring" class="tabcontent">
+  <h3>Flooring</h3>
+  <div class="tab2">
+<!--     {% for task in floor %}
+    <button class = "FlooringTabs" onclick = "openTask(event, 'Flooring', '{{ task }}')">{{ task }}</button>
+    {% endfor %} -->
+    </div>
+    <div class = "taskDets">
+      {% for task in floor %}
+      <div id='{{ task }}' class="FlooringTasks">
+      <li>{{ task }}</li>
+      </div>
+      {% endfor %}
+      <form method='POST' action="{{ url_for('project', project_name=projName) }}">
+      {{ form.hidden_tag() }}
+      {% if floor_cont %}
+      <p>Contractor: <a href="{{ url_for('user', username=floor_cont) }}">{{ floor_cont }}</a></p>
+      {% if status != 'Completed' %}
+      {% if g.user.username == owner or g.user.username == floor_cont %}
+      {{ form.rem_floor }}
+      {% endif %}
+      {% endif %}
+      {% else %}
+      {% if status != 'Completed' %}
+      {{ form.floor_name }}
+        <input type="submit" value="Send join request">
+      {% endif %}
+      {% endif %}
+      </form>
+    </div>
+</div>
+
+<div id="Cabinets" class="tabcontent">
+  <h3>Cabinets</h3>
+  <div class="tab2">
+<!--     {% for task in cabs %}
+    <button class = "CabinetsTabs" onclick = "openTask(event, 'Cabinets', '{{ task }}')">{{ task }}</button>
+    {% endfor %} -->
+    </div>
+    <div class = "taskDets">
+      {% for task in cabs %}
+      <div id='{{ task }}' class="CabinetsTasks">
+      <li>{{ task }}</li>
+      </div>
+      {% endfor %}
+      <form method='POST' action="{{ url_for('project', project_name=projName) }}">
+      {{ form.hidden_tag() }}
+      {% if cabs_cont %}
+      <p>Contractor: <a href="{{ url_for('user', username=cabs_cont) }}">{{ cabs_cont }}</a></p>
+      {% if status != 'Completed' %}
+      {% if g.user.username == owner or g.user.username == cabs_cont %}
+      {{ form.rem_cabs }}
+      {% endif %}
+      {% endif %}
+      {% else %}
+      {% if status != 'Completed' %}
+      {{ form.cabs_name }}
+        <input type="submit" value="Send join request">
+      {% endif %}
+      {% endif %}
+      </form>
+    </div>
+</div>
+
+<div id="Countertops" class="tabcontent">
+  <h3>Countertops</h3>
+  <div class="tab2">
+<!--     {% for task in counter %}
+    <button class = "CountertopsTabs" onclick = "openTask(event, 'Countertops', '{{ task }}')">{{ task }}</button>
+    {% endfor %} -->
+    </div>
+    <div class = "taskDets">
+      {% for task in counter %}
+      <div id='{{ task }}' class="CountertopsTasks">
+      <li>{{ task }}</li>
+      </div>
+      {% endfor %}
+      <form method='POST' action="{{ url_for('project', project_name=projName) }}">
+      {{ form.hidden_tag() }}
+      {% if counter_cont %}
+      <p>Contractor: <a href="{{ url_for('user', username=counter_cont) }}">{{ counter_cont }}</a></p>
+      {% if status != 'Completed' %}
+      {% if g.user.username == owner or g.user.username == counter_cont %}
+      {{ form.rem_counters }}
+      {% endif %}
+      {% endif %}
+      {% else %}
+      {% if status != 'Completed' %}
+      {{ form.counters_name }}
+        <input type="submit" value="Send join request">
+      {% endif %}
+      {% endif %}
+      </form>
+    </div>
+</div>
+
+<div id="Tiles" class="tabcontent">
+  <h3>Tiles</h3>
+  <div class="tab2">
+<!--     {% for task in backsplash %}
+    <button class = "BacksplashTabs" onclick = "openTask(event, 'Backsplash', '{{ task }}')">{{ task }}</button>
+    {% endfor %} -->
+    </div>
+    <div class = "taskDets">
+      {% for task in tiles %}
+      <div id='{{ task }}' class="TilesTasks">
+      <li>{{ task }}</li>
+      </div>
+      {% endfor %}
+      <form method='POST' action="{{ url_for('project', project_name=projName) }}">
+      {{ form.hidden_tag() }}
+      {% if tiles_cont %}
+      <p>Contractor: <a href="{{ url_for('user', username=tiles_cont) }}">{{ tiles_cont }}</a></p>
+      {% if status != 'Completed' %}
+      {% if g.user.username == owner or g.user.username == tiles_cont %}
+      {{ form.rem_tiles }}
+      {% endif %}
+      {% endif %}
+      {% else %}
+      {% if status != 'Completed' %}
+      {{ form.tiles_name }}
+        <input type="submit" value="Send join request">
+      {% endif %}
+      {% endif %}
+      </form>
+    </div>
+</div>
+
+<div id="Appliances" class="tabcontent">
+  <h3>Appliances</h3>
+  <div class="tab2">
+<!--     {% for task in apps %}
+    <button class = "AppliancesTabs" onclick = "openTask(event, 'Appliances', '{{ task }}')">{{ task }}</button>
+    {% endfor %} -->
+    </div>
+    <div class = "taskDets">
+      {% for task in apps %}
+      <div id='{{ task }}' class="AppliancesTasks">
+      <li>{{ task }}</li>
+      </div>
+      {% endfor %}
+      <form method='POST' action="{{ url_for('project', project_name=projName) }}">
+      {{ form.hidden_tag() }}
+      {% if apps_cont %}
+      <p>Contractor: <a href="{{ url_for('user', username=apps_cont) }}">{{ apps_cont }}</a></p>
+      {% if status != 'Completed' %}
+      {% if g.user.username == owner or g.user.username == apps_cont %}
+      {{ form.apps_demo }}
+      {% endif %}
+      {% endif %}
+      {% else %}
+      {% if status != 'Completed' %}
+      {{ form.apps_name }}
+        <input type="submit" value="Send join request">
+      {% endif %}
+      {% endif %}
+      </form>
+    </div>
+</div>
+
+<div id="Windows" class="tabcontent">
+  <h3>Appliances</h3>
+  <div class="tab2">
+<!--     {% for task in apps %}
+    <button class = "AppliancesTabs" onclick = "openTask(event, 'Appliances', '{{ task }}')">{{ task }}</button>
+    {% endfor %} -->
+    </div>
+    <div class = "taskDets">
+      {% for task in windows %}
+      <div id='{{ task }}' class="WindowsTasks">
+      <li>{{ task }}</li>
+      </div>
+      {% endfor %}
+      <form method='POST' action="{{ url_for('project', project_name=projName) }}">
+      {{ form.hidden_tag() }}
+      {% if windows_cont %}
+      <p>Contractor: <a href="{{ url_for('user', username=windows_cont) }}">{{ windows_cont }}</a></p>
+      {% if status != 'Completed' %}
+      {% if g.user.username == owner or g.user.username == windows_cont %}
+      {{ form.windows_demo }}
+      {% endif %}
+      {% endif %}
+      {% else %}
+      {% if status != 'Completed' %}
+      {{ form.windows_name }}
+        <input type="submit" value="Send join request">
+      {% endif %}
+      {% endif %}
+      </form>
+    </div>
+</div>
+</div>
+
+
+<script>
+
+function openTask(evt, SecName, TaskName) {
+	var i, taskCont, tasklinks;
+	taskCont = document.getElementsByClassName(SecName+"Tasks");
+	for (i = 0; i < taskCont.length; i++) {
+		taskCont[i].style.display = "none";
+	}
+	tasklinks = document.getElementsByClassName(SecName+"Tabs");
+	for (i = 0; i < tasklinks.length; i++) {
+		tasklinks[i].className = tasklinks[i].className.replace(" active", "");
+	}
+	document.getElementById(TaskName).style.display = "block";
+	evt.currentTarget.className += " active";
+}
+function openSec(evt, SecName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(SecName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+
+// Get the element with id="defaultOpen" and click on it
+document.getElementById("defaultOpen").click();
+document.getElementById("defaultOpenTask").click();
+</script>
+{% endblock %}

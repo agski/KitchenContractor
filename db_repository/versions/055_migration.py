@@ -1,0 +1,38 @@
+from sqlalchemy import *
+from migrate import *
+
+
+from migrate.changeset import schema
+pre_meta = MetaData()
+post_meta = MetaData()
+reqs = Table('reqs', pre_meta,
+    Column('issuer_id', INTEGER),
+    Column('projects_id', INTEGER),
+    Column('issuee_id', INTEGER),
+)
+
+pending = Table('pending', post_meta,
+    Column('id', Integer, primary_key=True, nullable=False),
+    Column('req_type', String(length=300)),
+    Column('issuer_id', Integer),
+    Column('issuee_id', Integer),
+)
+
+
+def upgrade(migrate_engine):
+    # Upgrade operations go here. Don't create your own engine; bind
+    # migrate_engine to your metadata
+    pre_meta.bind = migrate_engine
+    post_meta.bind = migrate_engine
+    pre_meta.tables['reqs'].drop()
+    post_meta.tables['pending'].columns['issuee_id'].create()
+    post_meta.tables['pending'].columns['issuer_id'].create()
+
+
+def downgrade(migrate_engine):
+    # Operations to reverse the above upgrade go here.
+    pre_meta.bind = migrate_engine
+    post_meta.bind = migrate_engine
+    pre_meta.tables['reqs'].create()
+    post_meta.tables['pending'].columns['issuee_id'].drop()
+    post_meta.tables['pending'].columns['issuer_id'].drop()

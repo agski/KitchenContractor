@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Search for contractors:</h1>
+<p>If you know a certain contractor's username, input it into the box and search</p>
+<p>Otherwise, click a contractor type to see results</p>
+
+<form action="" method="POST" name="findConts">
+      {{form.csrf_token}}
+      {{form.hidden_tag()}}
+      <table>
+          <tr>
+              <td>Search by name:</td>
+              <td>{{ form.by_name(size=24) }}</td>
+          </tr>
+          <tr>
+              <td>Search by type:</td>
+          </tr>
+              {% for type in form.by_type %}
+              <tr>
+              <td>{{ type.label(size=24) }}</td>
+              <td>{{ type(size=24) }}</td>
+              </tr>
+              {% endfor %}
+          </tr>
+          <tr>
+              <td></td>
+              <td><button type="submit">Search</button></td>
+          </tr>
+      </table>
+  </form>
+
+{% if conts %}
+<table>
+	{% for cont in conts %}
+		<tr>
+			<li><a href="{{url_for('user', username=cont.username) }}">{{cont.username}} : {{ cont.user_type }}</a></li>
+		</tr>
+	{% endfor %}
+</table>
+{% endif %}
+
+
+{% endblock %}

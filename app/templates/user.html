@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='user_cont.css') }}"/>
+  <h1>User: {{ user.username }}</h1>
+  <h2>User type: {{ user.user_type }} </h2>
+  <h2>Contact: {{ user.email }} </h2>
+  <hr>
+  <div class="tab">
+  <button class="tablinks" onclick="openSec(event, 'CurrentProj')" id="defaultOpen">Current Projects</button>
+  {% if g.user.username == user.username %}
+  <button class="tablinks" onclick="openSec(event, 'PastProj')">Past Projects</button>
+  <button class="tablinks" onclick="openSec(event, 'Pending')">Pending Requests</button>
+  {% endif %}
+</div>
+
+<div id="CurrentProj" class="tabcontent">
+  {% for prj in projs_curr %}
+  <p>
+  	<li><a href="{{url_for('project', project_name=prj.name) }}">{{prj.name}} : {{prj.role}}</b></a></li>
+  </p>
+  {% endfor %}
+</div>
+
+<div id="PastProj" class="tabcontent">
+  {% for prj in projs_past %}
+  <p>
+  	<li><a href="{{url_for('project', project_name=prj.name) }}">{{prj.name}} : {{prj.role}}</a></li>
+  </p>
+  {% endfor %}
+</div>
+
+<div id="Pending" class="tabcontent">
+  {% for pend in pending %}
+  <p>
+  	Project: <a href="{{url_for('project', project_name=pend.proj_name) }}">{{pend.proj_name}}</a>, Contractor: <a href="{{url_for('user', username=pend.cont_name) }}">{{pend.cont_name}}</a>, Job type: {{pend.req_type}}
+  	<form action="" method="POST" name="cancel">
+  	<button type='submit' name='cancel' value='{{pend.proj_name}},{{pend.cont_name}},{{pend.client_name}},{{pend.req_type}}'>Cancel</button>
+  	</form>
+  </p>
+  {% endfor %}
+</div>
+
+<script type="text/javascript">
+	function openSec(evt, SecName) {
+    // Declare all variables
+    var i, tabcontent, tablinks;
+
+    // Get all elements with class="tabcontent" and hide them
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+
+    // Get all elements with class="tablinks" and remove the class "active"
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+
+    // Show the current tab, and add an "active" class to the link that opened the tab
+    document.getElementById(SecName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+document.getElementById("defaultOpen").click();
+</script>
+{% endblock %}
