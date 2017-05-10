@@ -68,7 +68,7 @@ def project(project_name):
 			curr_project.status = "In progress"
 			db.session.commit()
 		if form.delete.data:
-			pending = models.Pending.query.filter_by(proj_name=curr_project_name).all()
+			pending = models.Pending.query.filter_by(proj_name=curr_project.proj_name).all()
 			for pend in pending:
 				db.session.delete(pend)
 			db.session.delete(curr_project)
