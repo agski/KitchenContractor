@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
+	<!-- Template/form to leave a contractor review -->
   <h1>Leave a review for {{ user.username }}</h1>
   <form action="" method="POST" name="review">
       {{ form.hidden_tag() }}
