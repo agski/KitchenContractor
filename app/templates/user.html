@@ -1,11 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
+<!-- Homeowner profile template -->
   <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='user_cont.css') }}"/>
   <h1>User: {{ user.username }}</h1>
   <h2>User type: {{ user.user_type }} </h2>
   <h2>Contact: {{ user.email }} </h2>
   <hr>
+  <!-- Code edited from W3Schools tutorial about vertical tabs -->
   <div class="tab">
   <button class="tablinks" onclick="openSec(event, 'CurrentProj')" id="defaultOpen">Current Projects</button>
   {% if g.user.username == user.username %}
@@ -14,6 +16,7 @@
   {% endif %}
 </div>
 
+<!-- Content for each button -->
 <div id="CurrentProj" class="tabcontent">
   {% for prj in projs_curr %}
   <p>
@@ -41,6 +44,7 @@
   {% endfor %}
 </div>
 
+<!-- Code edited from W3Schools tutorial about vertical tabs -->
 <script type="text/javascript">
 	function openSec(evt, SecName) {
     // Declare all variables

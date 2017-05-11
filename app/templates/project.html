@@ -21,6 +21,7 @@
     <p>Search for Contractors: <input type="submit" value="Find contractors" /></p>
 </form>
 {% endif %}
+<!-- Code edited from W3Schools tutorial about vertical tabs -->
 <div id="wrapper">
 <div class="tab">
   {% if demo != [] %}
@@ -61,12 +62,10 @@
   {% endif %}
 </div>
 
+<!-- Content for each phase of contrustion -->
 <div id="Demolition" class="tabcontent">
   <h3>Demolition</h3>
   <div class="tab2">
-<!--     {% for task in demo %}
-    <button class = "DemolitionTabs" onclick = "openTask(event, 'Demolition', '{{ task }}')">{{ task }}</button>
-    {% endfor %} -->
     </div>
     <div class = "taskDets">
       {% for task in demo %}
@@ -97,9 +96,6 @@
 <div id="Framing" class="tabcontent">
   <h3>Framing</h3>
   <div class="tab2">
-<!--     {% for task in framing %}
-    <button class = "FramingTabs" onclick = "openTask(event, 'Framing', '{{ task }}')">{{ task }}</button>
-    {% endfor %} -->
     </div>
     <div class = "taskDets">
       {% for task in framing %}
@@ -129,9 +125,6 @@
 <div id="Plumbing" class="tabcontent">
   <h3>Plumbing</h3>
   <div class="tab2">
-<!--     {% for task in plumb %}
-    <button class = "PlumbingTabs" onclick = "openTask(event, 'Plumbing', '{{ task }}')">{{ task }}</button>
-    {% endfor %} -->
     </div>
     <div class = "taskDets">
       {% for task in plumb %}
@@ -161,9 +154,6 @@
 <div id="Electrical" class="tabcontent">
   <h3>Electrical</h3>
   <div class="tab2">
-<!--     {% for task in elec %}
-    <button class = "ElectricalTabs" onclick = "openTask(event, 'Electrical', '{{ task }}')">{{ task }}</button>
-    {% endfor %} -->
     </div>
     <div class = "taskDets">
       {% for task in elec %}
@@ -193,9 +183,6 @@
 <div id="Drywall" class="tabcontent">
   <h3>Drywall</h3>
   <div class="tab2">
-<!--     {% for task in drywall %}
-    <button class = "DrywallTabs" onclick = "openTask(event, 'Drywall', '{{ task }}')">{{ task }}</button>
-    {% endfor %} -->
     </div>
     <div class = "taskDets">
       {% for task in drywall %}
@@ -225,9 +212,6 @@
 <div id="Painting" class="tabcontent">
   <h3>Painting</h3>
   <div class="tab2">
-<!--     {% for task in paint %}
-    <button class = "PaintingTabs" onclick = "openTask(event, 'Painting', '{{ task }}')">{{ task }}</button>
-    {% endfor %} -->
     </div>
     <div class = "taskDets">
       {% for task in paint %}
@@ -257,9 +241,6 @@
 <div id="Flooring" class="tabcontent">
   <h3>Flooring</h3>
   <div class="tab2">
-<!--     {% for task in floor %}
-    <button class = "FlooringTabs" onclick = "openTask(event, 'Flooring', '{{ task }}')">{{ task }}</button>
-    {% endfor %} -->
     </div>
     <div class = "taskDets">
       {% for task in floor %}
@@ -289,9 +270,6 @@
 <div id="Cabinets" class="tabcontent">
   <h3>Cabinets</h3>
   <div class="tab2">
-<!--     {% for task in cabs %}
-    <button class = "CabinetsTabs" onclick = "openTask(event, 'Cabinets', '{{ task }}')">{{ task }}</button>
-    {% endfor %} -->
     </div>
     <div class = "taskDets">
       {% for task in cabs %}
@@ -321,9 +299,6 @@
 <div id="Countertops" class="tabcontent">
   <h3>Countertops</h3>
   <div class="tab2">
-<!--     {% for task in counter %}
-    <button class = "CountertopsTabs" onclick = "openTask(event, 'Countertops', '{{ task }}')">{{ task }}</button>
-    {% endfor %} -->
     </div>
     <div class = "taskDets">
       {% for task in counter %}
@@ -353,9 +328,6 @@
 <div id="Tiles" class="tabcontent">
   <h3>Tiles</h3>
   <div class="tab2">
-<!--     {% for task in backsplash %}
-    <button class = "BacksplashTabs" onclick = "openTask(event, 'Backsplash', '{{ task }}')">{{ task }}</button>
-    {% endfor %} -->
     </div>
     <div class = "taskDets">
       {% for task in tiles %}
@@ -385,9 +357,6 @@
 <div id="Appliances" class="tabcontent">
   <h3>Appliances</h3>
   <div class="tab2">
-<!--     {% for task in apps %}
-    <button class = "AppliancesTabs" onclick = "openTask(event, 'Appliances', '{{ task }}')">{{ task }}</button>
-    {% endfor %} -->
     </div>
     <div class = "taskDets">
       {% for task in apps %}
@@ -449,7 +418,7 @@
 
 
 <script>
-
+//Code edited from W3Schools tutorial about vertical tabs
 function openTask(evt, SecName, TaskName) {
 	var i, taskCont, tasklinks;
 	taskCont = document.getElementsByClassName(SecName+"Tasks");

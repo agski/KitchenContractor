@@ -1,6 +1,7 @@
 from flask_wtf import Form
 from wtforms import StringField, BooleanField, TextAreaField, RadioField, SelectMultipleField, widgets, TextField,SubmitField
 from wtforms.validators import DataRequired, Length, Optional
+# Different types of forms used in various templates
 class EditForm(Form):
 	company_name = StringField('username', validators = [Optional()])
 	about = TextAreaField('about', validators = [Length(min=0, max=140)])

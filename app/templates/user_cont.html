@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
+<!-- Userprofile page for contractors -->
   <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='user_cont.css') }}"/>
   <h1>User: {{ user.username }}</h1>
   <h2>User type: {{ user.user_type }}</h2>
@@ -9,6 +10,7 @@
   <a href="{{url_for('review', username=user.username) }}"><b>Leave a review</b></a>
   {% endif %}
   <hr>
+  <!-- Code edited from W3Schools tutorial about vertical tabs -->
   <div class="tab">
   <button class="tablinks" onclick="openSec(event, 'Company')" id="defaultOpen">Company</button>
   <button class="tablinks" onclick="openSec(event, 'Past')">Past Projects</button>
@@ -19,6 +21,7 @@
   {% endif %}
 </div>
 
+<!-- Content for each button -->
 <div id="Company" class="tabcontent">
   <h3>{{user.company_name}}</h3>
   <p>{{ user.about }}</p>
@@ -86,7 +89,7 @@
   {% endfor %}
 </div>
 
-
+<!-- Code edited from W3Schools tutorial about vertical tabs -->
 <script type="text/javascript">
 	function openSec(evt, SecName) {
     // Declare all variables

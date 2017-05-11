@@ -9,6 +9,7 @@ from flask_login import LoginManager
 def load_user(user_id):
 	return User.query.get(int(user_id))
 
+#tables for relationships between classes
 mem_table = Table('mems', db.Model.metadata,
 	Column('users_id', Integer, ForeignKey('users.id')),
 	Column('projects_id', Integer, ForeignKey('projects.id')))
@@ -25,6 +26,7 @@ rev_table = Table('revs', db.Model.metadata,
 	Column('review_id', Integer, ForeignKey('reviews.id')),
 	Column('cont_id', Integer, ForeignKey('users.id')))
 
+#contractor reviews
 class Review(db.Model):
 	__tablename__ = 'reviews'
 	id = db.Column(db.Integer, primary_key=True)
@@ -36,6 +38,7 @@ class Review(db.Model):
 	proj_name = db.Column(db.String(300))
 	cont = relationship("User", secondary=rev_table, back_populates="reviews",lazy='dynamic')
 
+#pending requests
 class Pending(db.Model):
 	__tablename__ = 'pending'
 	id = db.Column(db.Integer, primary_key=True)
@@ -54,6 +57,7 @@ class Pending(db.Model):
 		self.client_name = client_name
 		self.proj_name = proj_name
 
+#user of any type
 class User(db.Model):
 	__tablename__ = 'users'
 	id = db.Column(db.Integer, primary_key=True)
@@ -90,6 +94,7 @@ class User(db.Model):
 	def get_id(self):
 		return str(self.id)
 
+#Renovation Project
 class Project(db.Model):
 	__tablename__ = 'projects'
 	id = db.Column(db.Integer, primary_key = True)

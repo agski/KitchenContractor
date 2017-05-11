@@ -3,11 +3,12 @@ from .forms import EditForm, ProjForm, SignUpForm, SearchForm, AssignForm, Revie
 from flask import Flask, session, request, flash, url_for, redirect, render_template, abort ,g
 from flask_login import login_user , logout_user , current_user , login_required
  
-
+#Set global variable to user before each request
 @app.before_request
 def before_request():
     g.user = current_user
 
+#Login template logic - Code from microblog tutorial
 @app.route('/login',methods=['GET','POST'])
 def login():
     if request.method == 'GET':
@@ -22,6 +23,7 @@ def login():
     print('Logged in successfully')
     return redirect(request.args.get('next') or url_for('index'))
 
+#Register template logic, creates new user
 @app.route('/register' , methods=['GET','POST'])
 def register():
 	form = SignUpForm()
@@ -41,6 +43,7 @@ def register():
 		print('Please fill out all required fields')
 		return render_template('register.html', form=form)
 
+#index template logic
 @app.route('/')
 @app.route('/index')
 @login_required
@@ -48,25 +51,30 @@ def index():
 	user = g.user
 	return render_template('index.html', title='Home', user=user)
 
+#logout logic - code from microblog tutorial
 @app.route('/logout')
 def logout():
 	logout_user()
 	return redirect(url_for('index'))
 
+#Individual project template logic
 @app.route('/project/<project_name>',methods=['GET','POST'])
 @login_required
 def project(project_name):
 	form = AssignForm()
 	user = g.user
+	#get project and its members from db
 	curr_project = models.Project.query.filter_by(proj_name=project_name).first()
 	members = curr_project.members.all()
 	if form.validate_on_submit():
+		#gather project status
 		if form.done.data:
 			curr_project.status = "Completed"
 			db.session.commit()
 		if form.in_prog.data:
 			curr_project.status = "In progress"
 			db.session.commit()
+		#delete project if necessary
 		if form.delete.data:
 			pending = models.Pending.query.filter_by(proj_name=curr_project.proj_name).all()
 			for pend in pending:
@@ -74,6 +82,7 @@ def project(project_name):
 			db.session.delete(curr_project)
 			db.session.commit()
 			return redirect(url_for('user',username=g.user.username))
+		#remove contractor from project if necessary
 		if form.rem_demo.data:
 			assigned = models.User.query.filter_by(username=curr_project.Demolition).first()
 			curr_project.members.remove(assigned)
@@ -136,6 +145,7 @@ def project(project_name):
 			db.session.commit()
 		cont = None
 		cont_type = ""
+		#add contractor to project if necessary
 		if form.demo_name.data != '':
 			cont = models.User.query.filter_by(username=form.demo_name.data).first()
 			cont_type = 'Demolition'
@@ -172,6 +182,7 @@ def project(project_name):
 		elif form.windows_name.data != '':
 			cont = models.User.query.filter_by(username=form.windows_name.data).first()
 			cont_type = 'Windows'
+		#create new Pending request if necessary
 		if cont != None:
 			if cont_type in cont.user_type:
 				if models.Pending.query.filter(models.Pending.req_type==cont_type, models.Pending.issuer.any(username=user.username), models.Pending.issuee.any(username=cont.username)).first() != None:
@@ -188,6 +199,7 @@ def project(project_name):
 		else:
 			print('User account does not exist')
 
+	#gather rest of the project information
 	demo_cont=curr_project.Demolition
 	framing_cont=curr_project.Framing
 	plumb_cont=curr_project.Plumbing
@@ -219,6 +231,7 @@ def project(project_name):
 		plumb_cont=plumb_cont,elec_cont=elec_cont,drywall_cont=drywall_cont,paint_cont=paint_cont,floor_cont=floor_cont,
 		cabs_cont=cabs_cont,counter_cont=counter_cont,tiles_cont=tiles_cont,apps_cont=apps_cont,form=form)
 
+#add a review for a contractor
 @app.route('/review/<username>',methods=['GET', 'POST'])
 @login_required
 def review(username):
@@ -238,6 +251,7 @@ def review(username):
 		return render_template('review.html',user=user,form=form)
 
 
+#search for contractors
 @app.route('/findContractors', methods=['GET', 'POST'])
 @login_required
 def findContractors():
@@ -247,12 +261,14 @@ def findContractors():
 	if form.validate_on_submit():
 		conts=[]
 		name = form.by_name.data
+		#by name
 		if name != "":
 			cont = models.User.query.filter_by(username=name).first()
 			if cont == None or cont.user_type == 'Home Owner':
 				print('User %s not found.' % name)
 				return redirect(url_for('findContractors'))
 			conts+= [cont]
+		#by type
 		else:
 			all_conts = models.User.query.all()
 			utype = form.by_type.data
@@ -263,17 +279,19 @@ def findContractors():
 	else:
 		return render_template('FindCont.html',form =form)
 
-
+#User home profile
 @app.route('/user/<username>',methods=['GET', 'POST'])
 @login_required
 def user(username):
 	user = models.User.query.filter_by(username=username).first()
 	form_edit = EditForm()
 	if request.method == 'POST':
+		#gather information if usertype is contractor
 		if g.user.user_type != "Home Owner":
 			action = request.form['submit'].split(',')
 			req = models.Pending.query.filter(models.Pending.proj_name == action[0],models.Pending.issuee.any(username=user.username)).first()
 			proj = models.Project.query.filter(models.Project.proj_name == action[0], models.Project.members.any(username=req.client_name)).first()
+			#update an accepted/declined pending request
 			if action[1] == 'Accept':
 				if proj.status == 'Completed':
 					print('project has been marked as Completed')
@@ -349,12 +367,14 @@ def user(username):
 				req = user.received_req.filter_by(proj_name=action[0]).first()
 				db.session.delete(req)
 				db.session.commit()
+		#Cancel a pending request
 		else:
 			action = request.form['cancel'].split(',')
 			req = models.Pending.query.filter(models.Pending.proj_name == action[0],models.Pending.issuee.any(username=action[1]),models.Pending.issuer.any(username=action[2]),models.Pending.req_type==action[3]).first()
 			db.session.delete(req)
 			db.session.commit()
 	
+	#Gather all projects that the user is a part of
 	projs = user.projs.all()
 	if user == None:
 		print('User %s not found.' % username)
@@ -398,6 +418,7 @@ def user(username):
 	pending_reqs = []
 	pending = []
 	reviews = []
+	#gather all pending requests the user is a part of
 	if user.user_type == "Home Owner":
 		pending_reqs = user.issued_req.all()
 		for pend in pending_reqs:
@@ -413,6 +434,7 @@ def user(username):
 	else:
 		return render_template('user_cont.html',reviews=reviews,user=user,projs_curr=proj_descrip_curr,projs_past=proj_descrip_past,pending=pending)
 
+#profile edit page for contractors
 @app.route('/edit', methods=['GET', 'POST'])
 @login_required
 def edit():
@@ -430,6 +452,7 @@ def edit():
 		form.about.data = g.user.about
 	return render_template('edit.html', form=form)
 
+#logic for new project template
 @app.route('/newProject', methods = ['GET','POST'])
 @login_required
 def newProject():
@@ -440,7 +463,7 @@ def newProject():
 		steps = dict(demo_stps="",framing_stps="",plumb_stps="",elec_stps="",drywall_stps="",paint_stps="",
 		floor_stps="",cab_stps="",tiles_stps="",counter_stps = "",app_stps="",window_stps="")
 		proj_name = form.proj_name.data
-
+		#create project steps based on form data
 		if form.cabs_rep.data == 'Yes':
 			steps['demo_stps'] += "Tear out cabinets,"
 			steps['demo_stps']+= "Remove appliances - store those to be reused,"
