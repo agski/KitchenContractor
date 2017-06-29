@@ -1,4 +1,5 @@
-Independent project to create a platform that allows homeowners to fulfill the role of General Contractor in their personal kitchen renovations.
+Independent project to create a platform that allows homeowners to fulfill
+the role of General Contractor in their personal kitchen renovations.
 
 Dependendcies:
 Python 3
